@@ -1,0 +1,70 @@
+<div class="container">
+    <h1 class="mt-3">Add BlogPost</h1>
+    <form #form="ngForm" (ngSubmit)="onformSubmit()" >
+        <div class="mt-2 mb-5">
+            <div class="mt-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="title" id="title"  class="form-control" [(ngModel)]="model.Title" >
+            </div>
+            <div class="mt-3">
+                <label for="urlHandle" class="form-label">URL Handle</label>
+                <input type="text" name="urlHandle" id="urlHandle" class="form-control" [(ngModel)]="model.URLHandle" >
+            </div>
+            <div class="mt-3">
+                <label for="shortDescription" class="form-label">Short Description</label>
+                <input type="text" name="shortDescription" id="shortDescription" class="form-control" [(ngModel)]="model.ShortDescription">
+            </div>
+            <div class="mt-3">
+                <label for="content" class="form-label">Content</label>
+                <!-- <textarea name="content" id="content" class="form-control" [(ngModel)]="model.Content"></textarea> -->
+                 <div class="d-flex flex-row">
+                    <div class="col-6 p-2">
+                        <textarea name="content" id="content" class="form-control" style="height: 350px; max-height: 350px;" [(ngModel)]="model.Content">
+                        </textarea>
+                    </div>
+                    <div class="col-6 p-2" style="height: 350px; overflow-y: scroll;" >
+                        <markdown [data]="model.Content"></markdown>
+                    </div>
+                 </div>
+            </div>
+            <div class="mt-3">
+                <label for="featuredImageUrl" class="form-label">Featured Image URL
+                    <button type="button" class="btn btn-sm btn-dark ms-2" (click)="openImageSelector()">Select Image</button>
+                </label>
+                <ng-container *ngIf="model.FeaturedImageURL != ''">
+                    <div class="mb-3">
+                        <img [src]="model.FeaturedImageURL" alt="Featured Image" class="img-fluid" style="max-height: 200px;">
+                    </div>
+                </ng-container>
+                <input type="text" name="featuredImageUrl" id="featuredImageUrl" class="form-control" [(ngModel)]="model.FeaturedImageURL">
+            </div>
+            <div class="mt-3">
+                <label for="publishedDate" class="form-label">Published Date</label>
+                <input type="date" name="publishedDate" id="publishedDate" class="form-control" [ngModel]="model.PublishedDate | date:'yyyy-MM-dd'" (ngModelChange)="model.PublishedDate = $event" >
+            </div>
+            <div class="mt-3">
+                <label for="auther" class="form-label">Auther</label>
+                <input type="text" name="auther" id="auther" class="form-control" [(ngModel)]="model.Auther">
+            </div>
+            <div class="form-check mt-3">
+                <label for="isVisible" class="form-check-label">Is Visible ?</label>
+                <input type="checkbox" name="isVisible" id="isVisible" class="form-check-input" [(ngModel)]="model.IsVisible">
+            </div>
+            <div class="mt-3">
+                <label for="Categories" class="form-label">Categories</label>
+                <ng-container *ngIf="categories$ | async as categories">
+                    <select name="Categories" id="Categories" class="form-select" multiple [(ngModel)]="model.Categories">
+                        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+                    </select>
+                </ng-container>
+            </div>
+            <div class="mt-3">  
+                <button type="submit" class="btn btn-primary" > Save</button>
+            </div>
+        </div>
+    </form>
+    
+</div>
+<div class="image-container-modal" [ngClass]="{'d-block': isImageSelectorOpen,'d-none': !isImageSelectorOpen}">
+    <app-image-selector (close)="closeImageSelector()"></app-image-selector>
+</div>

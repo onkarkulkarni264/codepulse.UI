@@ -1,0 +1,25 @@
+.sort-arrows {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 6px;
+  vertical-align: middle;
+  line-height: 1;
+  gap: 4px;
+}
+
+.sort-arrow {
+  cursor: pointer;
+  font-size: 10px;
+  color: #aaa;
+  line-height: 1;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.sort-arrow:hover {
+  color: #333;
+}
+
+.sort-arrow.active {
+  color: #0d6efd;
+}

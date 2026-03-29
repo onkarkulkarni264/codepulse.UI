@@ -1,0 +1,67 @@
+<div class="container">
+    <h1 class="mt-3">Categories</h1>
+    <div class="d-flex justify-content-between mt-3">
+        <div class="d-flex">
+            <input type="searchText" class="form-control" placeholder="Search categories..." #searchInput
+                (keyup.enter)="SearchCatagories(searchInput.value)">
+            <button class="btn btn-primary ms-2" (click)="SearchCatagories(searchInput.value)">Search</button>
+        </div>
+        <a [routerLink]="['/admin/addcatagories/add']" class="btn btn-primary" style="margin-right: 50px;"> Add
+            Category</a>
+    </div>
+</div>
+<ng-container *ngIf="categories$ | async as categorieslist">
+    <div class="d-flex justify-content-center ">
+        <div class="table-responsive " style="width: 100%; max-width: 1291px; padding-right: 47px;">
+            <table class="table table-bordered table-striped mt-3">
+                <thead>
+                    <tr>
+                        <!-- <th>ID</th> -->
+                        <th>
+                            Category Name
+                            <span class="sort-arrows">
+                                <span class="sort-arrow" [class.active]="sortBy === 'Name' && sortDirection === 'asc'"
+                                    (click)="SortCategories('Name', 'asc')" title="Sort Ascending">▲</span>
+                                <span class="sort-arrow" [class.active]="sortBy === 'Name' && sortDirection === 'desc'"
+                                    (click)="SortCategories('Name', 'desc')" title="Sort Descending">▼</span>
+                            </span>
+                        </th>
+                        <th> Url Handle
+                            <span class="sort-arrows">
+                                <span class="sort-arrow"
+                                    [class.active]="sortBy === 'URLHandle' && sortDirection === 'asc'"
+                                    (click)="SortCategories('URLHandle', 'asc')" title="Sort Ascending">▲</span>
+                                <span class="sort-arrow"
+                                    [class.active]="sortBy === 'URLHandle' && sortDirection === 'desc'"
+                                    (click)="SortCategories('URLHandle', 'desc')" title="Sort Descending">▼</span>
+                            </span>
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let category of categorieslist">
+                        <!-- <td>{{category.id}}</td> -->
+                        <td>{{category.name}}</td>
+                        <td>{{category.urlHandle}}</td>
+                        <td><a class="btn btn-primary" [routerLink]="['/admin/categories', category.id]">Edit</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" style="cursor: pointer;" [class.disabled]="currentPage === 1"><a
+                                class="page-link" (click)="PreviousPage()">Previous</a></li>
+                        <li class="page-item" style="cursor: pointer;" *ngFor="let page of getPages()"
+                            [class.active]="currentPage === page">
+                            <a class="page-link" (click)="GoToPage(page)">{{page}}</a>
+                        </li>
+                        <li class="page-item" style="cursor: pointer;" [class.disabled]="currentPage === totalPages"><a
+                                class="page-link" (click)="NextPage()">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</ng-container>
